@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org"
+>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>Saúde Pública</title>
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../dist/css/adminlte.min.css">
+
+    <link rel="stylesheet" href="../style/util.css">
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+
+</head>
+
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+
+    <div th:replace="fragments/header :: header">...</div>
+
+    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <!-- Brand Logo -->
+        <a href="index3.html" class="brand-link">
+            <span class="brand-text font-weight-light">Saúde Pública</span>
+        </a>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Sidebar user panel (optional) -->
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="info">
+                    <a href="#" class="d-block">Nome</a>
+                </div>
+            </div>
+
+            <!-- Sidebar Menu -->
+            <nav class="mt-2">
+                <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                    data-accordion="false">
+                    <!-- Add icons to the links using the .nav-icon class
+                         with font-awesome or any other icon font library -->
+                    <li class="nav-item has-treeview menu-open">
+                        <a th:href="@{/users}" class="nav-link">
+                            <p>
+                                Usuários
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+
+                        <a th:href="@{/establishments}" class="nav-link">
+                            <p>
+                                Estabelecimentos
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+
+                        <a th:href="@{/medications}" class="nav-link">
+
+                            <p>
+                                Medicamentos
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+
+                        <a th:href="@{/stocks-inputs}" class="nav-link">
+
+                            <p>
+                                Entradas de estoque
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+
+                        <a th:href="@{/stocks-outputs}" class="nav-link">
+
+                            <p>
+                                Saída de estoque
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <!-- /.sidebar-menu -->
+        </div>
+        <!-- /.sidebar -->
+    </aside>
+
+    <div class="content-wrapper">
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h4 class="m-2 text-dark underline">Entrada de Estoque</h4>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- left column -->
+                    <div class="col-md-8 containe-center">
+                        <!-- general form elements -->
+                        <div class="card">
+                            <div class="card-header primary-color">
+                                <h3 class="card-title"></h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <!-- form start -->
+                            <form role="form" action="/stocks-inputs" method="post" th:object="${stockInput}">
+                                <div class="card-body">
+                                    <input type="hidden" id="id" name="id" th:value="${stockInput.id}">
+                                    <input type="hidden" id="status" name="status" th:value="${stockInput.status}">
+                                    <div class="form-group">
+                                        <label>Estabelecimento</label>
+                                        <select th:readonly="${stockInput.status != null}"
+                                                th:classappend="${stockInput.status != null} ? disable-select : none"
+                                                required=true class="form-control" id="establishment.id"
+                                                name="establishment.id">
+                                            <option th:each="establishment : ${establishments}"
+                                                    th:value="${establishment.id}"
+                                                    th:text="${establishment.name}"
+                                                    th:selected="${establishment.id} == ${stockInput.establishment?.id}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="invoiceNumber">Número da Nota Fiscal *</label>
+                                        <input th:readonly="${stockInput.status != null}"
+                                                required=true type="number" class="form-control" id="invoiceNumber"
+                                               name="invoiceNumber"
+                                               placeholder="Número da Nota Fiscal "
+                                               th:value="${stockInput.invoiceNumber}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="provider">Nome do Fornecedor</label>
+                                        <input th:readonly="${stockInput.status != null}"
+                                                required=true type="text" class="form-control" id="provider"
+                                               name="provider"
+                                               placeholder="Nome do Fornecedor" th:value="${stockInput.provider}">
+                                    </div>
+
+                                    <button th:if="${stockInput.id != null}"
+                                            type="button"
+                                            class="btn btn-info margin-bottom-20"
+                                            data-toggle="modal"
+                                            data-target="#modal-default">
+                                        Adicionar Item
+                                    </button>
+
+
+                                    <div class="form-group"
+                                         th:if="${stockInput.id != null && stockInput.itemInputList != null}">
+                                        <label for="provider">Itens</label>
+                                        <div>
+                                            <table id="example2" class="table table-bordered table-hover">
+                                                <thead>
+                                                <tr>
+                                                    <th>Nome</th>
+                                                    <th>Quantidade</th>
+                                                    <th></th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr th:each="itemInput : ${stockInput.itemInputList}">
+                                                    <td th:text="${itemInput.medication.name}"></td>
+                                                    <td th:text="${itemInput.amount}"></td>
+                                                    <td>
+                                                        <a class="m-2 text-decoration-none"
+                                                           th:href="@{/stocks-inputs/delete-item/{id}(id=${itemInput.id})}">
+                                                            <ion-icon class="icon-size" name="trash-outline"></ion-icon>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12" th:if="${stockInput.errors != null}">
+                                        <div class="card bg-gradient-danger">
+                                            <div class="card-header">
+                                                <h3 class="card-title">Erro(s)</h3>
+                                            </div>
+                                            <div class="card-body">
+                                                <p th:each="error : ${stockInput.errors}"
+                                                   th:text="${error}"></p>
+                                            </div>
+                                            <!-- /.card-body -->
+                                        </div>
+                                        <!-- /.card -->
+                                    </div>
+                                </div>
+                                <!-- /.card-body -->
+
+                                <div class="card-footer">
+                                    <button th:if="${stockInput.id == null}"
+                                            type="submit"
+                                            class="btn button">
+                                        Salvar
+                                    </button>
+                                    <button th:if="${stockInput.id != null}"
+                                            type="submit"
+                                            class="btn button">
+                                        Finalizar
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Novo item</h4>
+                    <button type="button" class="close" data-dismiss="modal"
+                            aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form role="form" action="/stocks-inputs/add-item" method="post"
+                      th:object="${itemInput}">
+                    <input type="hidden" id="stockInput.id" name="stockInput.id" th:value="${stockInput.id}">
+                    <input type="hidden" id="stockInput.establishment.id" name="stockInput.establishment.id"
+                           th:value="${stockInput.establishment.id}">
+                    <input type="hidden" id="stockInput.invoiceNumber" name="stockInput.invoiceNumber"
+                           th:value="${stockInput.invoiceNumber}">
+                    <input type="hidden" id="stockInput.provider" name="stockInput.provider"
+                           th:value="${stockInput.provider}">
+                    <div class="modal-body">
+                        <select required=true class="form-control" id="medication.id" name="medication.id">
+                            <option th:each="medication : ${medications}"
+                                    th:value="${medication.id}"
+                                    th:text="${medication.name}">
+                            </option>
+                        </select>
+                        <br>
+                        <input type="number" class="form-control" id="amount"
+                               name="amount"
+                               placeholder="Quantidade"
+                               th:value="${itemInput.amount}">
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default"
+                                data-dismiss="modal">Fechar
+                        </button>
+                        <button type="submit" class="btn btn btn-info">
+                            Adicionar
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+
+
+    <div th:replace="fragments/footer :: footer">...</div>
+
+    <script src="https://unpkg.com/ionicons@5.1.2/dist/ionicons.js"></script>
+
+    <!-- jQuery -->
+    <script src="../plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="../dist/js/adminlte.min.js"></script>
+</div>
+</body>
+
+
+</html>
