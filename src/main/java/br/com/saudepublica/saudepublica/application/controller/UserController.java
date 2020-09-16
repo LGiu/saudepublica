@@ -1,5 +1,6 @@
 package br.com.saudepublica.saudepublica.application.controller;
 
+import br.com.saudepublica.saudepublica.application.util.Session;
 import br.com.saudepublica.saudepublica.domain.dto.UserDto;
 import br.com.saudepublica.saudepublica.domain.dto.enumerator.TypeUser;
 import br.com.saudepublica.saudepublica.domain.service.UserService;
@@ -33,14 +34,18 @@ public class UserController {
     public ModelAndView getUsers() {
         ModelAndView modelAndView = new ModelAndView("user/users-list");
         modelAndView.addObject("users", userService.getAll());
+        modelAndView.addObject("user", Session.getUser());
         return modelAndView;
     }
 
     @RequestMapping("/{id}")
     public ModelAndView getUserById(@PathVariable("id") Long id, UserDto userDto, Boolean outRequest) throws Exception {
         ModelAndView modelAndView = new ModelAndView("user/users-form");
-        modelAndView.addObject("user", outRequest != null && !outRequest ? userDto : userService.getById(id));
+        userDto = outRequest != null && !outRequest ? userDto : userService.getById(id);
+        userDto.setPassword(null);
+        modelAndView.addObject("user", userDto);
         modelAndView.addObject("typeUser", TypeUser.values());
+        modelAndView.addObject("user", Session.getUser());
         return modelAndView;
     }
 
@@ -49,6 +54,7 @@ public class UserController {
         ModelAndView modelAndView = new ModelAndView("user/users-form");
         modelAndView.addObject("user", userDto != null ? userDto : new UserDto());
         modelAndView.addObject("typeUser", TypeUser.values());
+        modelAndView.addObject("user", Session.getUser());
         return modelAndView;
     }
 

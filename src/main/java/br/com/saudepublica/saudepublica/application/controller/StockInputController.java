@@ -1,5 +1,6 @@
 package br.com.saudepublica.saudepublica.application.controller;
 
+import br.com.saudepublica.saudepublica.application.util.Session;
 import br.com.saudepublica.saudepublica.domain.dto.ItemInputDto;
 import br.com.saudepublica.saudepublica.domain.dto.StockInputDto;
 import br.com.saudepublica.saudepublica.domain.dto.enumerator.StockStatus;
@@ -45,6 +46,7 @@ public class StockInputController {
     public ModelAndView getStockInputs() {
         ModelAndView modelAndView = new ModelAndView("stock-input/stocks-inputs-list");
         modelAndView.addObject("stocksInputs", stockInputService.getAll());
+        modelAndView.addObject("user", Session.getUser());
         return modelAndView;
     }
 
@@ -55,6 +57,7 @@ public class StockInputController {
         modelAndView.addObject("itemInput", new ItemInputDto());
         modelAndView.addObject("establishments", establishmentService.getAll());
         modelAndView.addObject("medications", medicationService.getAll());
+        modelAndView.addObject("user", Session.getUser());
         return modelAndView;
     }
 
@@ -65,6 +68,7 @@ public class StockInputController {
         modelAndView.addObject("itemInput", new ItemInputDto());
         modelAndView.addObject("establishments", establishmentService.getAll());
         modelAndView.addObject("medications", medicationService.getAll());
+        modelAndView.addObject("user", Session.getUser());
         return modelAndView;
     }
 

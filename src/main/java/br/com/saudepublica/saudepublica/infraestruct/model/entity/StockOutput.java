@@ -46,7 +46,7 @@ public class StockOutput extends Model {
     @ManyToOne(fetch = FetchType.LAZY)
     private Establishment transferEstablishment;
 
-    @OneToMany(mappedBy = "stockOutput", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "stockOutput", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private List<ItemOutput> itemOutputList;
 
     @Enumerated(EnumType.STRING)

@@ -29,7 +29,7 @@
 
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
-        <a href="index3.html" class="brand-link">
+        <a href="/" class="brand-link">
             <span class="brand-text font-weight-light">Saúde Pública</span>
         </a>
 
@@ -38,7 +38,8 @@
             <!-- Sidebar user panel (optional) -->
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                 <div class="info">
-                    <a href="#" class="d-block">Nome</a>
+                    <a href="#" class="d-block font-size-18" th:text="${user.name}"></a>
+                    <a href="#" class="d-block font-size-14" th:text="${user.type.description}"></a>
                 </div>
             </div>
 
@@ -134,7 +135,7 @@
                                         </select>
                                     </div>
                                     <div class="form-group">
-                                        <label for="invoiceNumber">Número da Nota Fiscal *</label>
+                                        <label for="invoiceNumber">Número da Nota Fiscal</label>
                                         <input th:readonly="${stockInput.status != null}"
                                                 required=true type="number" class="form-control" id="invoiceNumber"
                                                name="invoiceNumber"
@@ -235,8 +236,8 @@
                 <form role="form" action="/stocks-inputs/add-item" method="post"
                       th:object="${itemInput}">
                     <input type="hidden" id="stockInput.id" name="stockInput.id" th:value="${stockInput.id}">
-                    <input type="hidden" id="stockInput.establishment.id" name="stockInput.establishment.id"
-                           th:value="${stockInput.establishment.id}">
+                    <input type="hidden" id="stockInput?.establishment?.id" name="stockInput?.establishment?.id"
+                           th:value="${stockInput?.establishment?.id}">
                     <input type="hidden" id="stockInput.invoiceNumber" name="stockInput.invoiceNumber"
                            th:value="${stockInput.invoiceNumber}">
                     <input type="hidden" id="stockInput.provider" name="stockInput.provider"

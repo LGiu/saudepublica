@@ -28,7 +28,7 @@
 
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
-        <a href="index3.html" class="brand-link">
+        <a href="/" class="brand-link">
             <span class="brand-text font-weight-light">Saúde Pública</span>
         </a>
 
@@ -37,7 +37,8 @@
             <!-- Sidebar user panel (optional) -->
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                 <div class="info">
-                    <a href="#" class="d-block">Nome</a>
+                    <a href="#" class="d-block font-size-18" th:text="${user.name}"></a>
+                    <a href="#" class="d-block font-size-14" th:text="${user.type.description}"></a>
                 </div>
             </div>
 
@@ -112,7 +113,7 @@
                                 <!-- /.card-header -->
                                 <div class="card-body">
                                     <form action="/medications/new">
-                                        <button type="submit" class="btn btn-info m-2">Novo</button>
+                                        <button type="submit" class="btn btn-info m-2" th:disabled="${user.type.key} != ADMIN">Novo</button>
                                     </form>
                                     <table id="example2" class="table table-bordered table-hover">
                                         <thead>
@@ -121,7 +122,7 @@
                                             <th>Data de Vencimento</th>
                                             <th>Código de Barro</th>
                                             <th>Quantidade</th>
-                                            <th></th>
+                                            <th th:if="${user.type.key} == ADMIN"></th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -129,7 +130,7 @@
                                             <td th:text="${medication.name}"></td>
                                             <td th:text="${#temporals.format(medication.dueDate, 'dd/MM/yyyy')}"></td>
                                             <td th:text="${medication.barcode}"></td>
-                                            <td>
+                                            <td th:if="${user.type.key} == ADMIN">
                                                 <p th:if="${medication.stockList} != null"
                                                    th:each="stock : ${medication.stockList}"
                                                    th:text="${stock.establishment.name} + '  -  ' + ${stock.amount}"></p>

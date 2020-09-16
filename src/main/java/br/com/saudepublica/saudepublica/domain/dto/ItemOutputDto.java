@@ -22,7 +22,7 @@ public class ItemOutputDto extends Dto {
     private StockOutputDto stockOutput;
 
     @NotNull(message = "O medicamento deve ser imformado!")
-    private Medication medication;
+    private MedicationDto medication;
 
     @NotNull(message = "A quantidade não pode ser vazio!")
     @Range(min = 1)

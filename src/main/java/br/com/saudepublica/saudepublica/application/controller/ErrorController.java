@@ -1,5 +1,6 @@
 package br.com.saudepublica.saudepublica.application.controller;
 
+import br.com.saudepublica.saudepublica.application.util.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
 import org.springframework.stereotype.Controller;
@@ -19,9 +20,11 @@ public class ErrorController implements org.springframework.boot.web.servlet.err
     }
 
     @RequestMapping(value = path)
-    public ModelAndView accessdenied(WebRequest webRequest) {
+    public ModelAndView accessDenied(WebRequest webRequest) {
         final Throwable error = errorAttributes.getError(webRequest);
-        return new ModelAndView("error");
+        ModelAndView modelAndView = new ModelAndView("error");
+        modelAndView.addObject("user", Session.getUser());
+        return modelAndView;
     }
 
     @Override

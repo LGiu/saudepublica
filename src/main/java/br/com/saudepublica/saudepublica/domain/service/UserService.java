@@ -5,6 +5,7 @@ import br.com.saudepublica.saudepublica.domain.dto.UserDto;
 import br.com.saudepublica.saudepublica.domain.repository.UserRepository;
 import br.com.saudepublica.saudepublica.infraestruct.model.entity.User;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -40,7 +41,7 @@ public class UserService {
     }
 
     public UserDto save(UserDto userDto) {
-        if(userDto.getId() == null){
+        if (userDto.getId() == null) {
             if (userRepository.existsByCpf(userDto.getCpf())) {
                 userDto.setErrors(Collections.singletonList("O CPF já está cadastrado!"));
                 return userDto;
@@ -62,6 +63,7 @@ public class UserService {
             }
         }
 
+        userDto.setPassword(new BCryptPasswordEncoder().encode(userDto.getPassword()));
 
         return modelMapper.map(
                 userRepository.save(

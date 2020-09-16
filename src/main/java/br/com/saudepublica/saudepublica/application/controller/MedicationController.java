@@ -1,5 +1,6 @@
 package br.com.saudepublica.saudepublica.application.controller;
 
+import br.com.saudepublica.saudepublica.application.util.Session;
 import br.com.saudepublica.saudepublica.domain.dto.MedicationDto;
 import br.com.saudepublica.saudepublica.domain.service.MedicationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ public class MedicationController {
     public ModelAndView getMedications() {
         ModelAndView modelAndView = new ModelAndView("medication/medications-list");
         modelAndView.addObject("medications", medicationService.getAll());
+        modelAndView.addObject("user", Session.getUser());
         return modelAndView;
     }
 
@@ -38,6 +40,7 @@ public class MedicationController {
     public ModelAndView getMedicationById(@PathVariable("id") Long id, MedicationDto medication, Boolean outRequest) throws Exception {
         ModelAndView modelAndView = new ModelAndView("medication/medications-form");
         modelAndView.addObject("medication", outRequest != null && !outRequest ? medication : medicationService.getById(id));
+        modelAndView.addObject("user", Session.getUser());
         return modelAndView;
     }
 
@@ -45,6 +48,7 @@ public class MedicationController {
     public ModelAndView newMedication(MedicationDto medication) {
         ModelAndView modelAndView = new ModelAndView("medication/medications-form");
         modelAndView.addObject("medication", medication != null ? medication : new MedicationDto());
+        modelAndView.addObject("user", Session.getUser());
         return modelAndView;
     }
 

@@ -1,10 +1,13 @@
 package br.com.saudepublica.saudepublica.domain.service;
 
+import br.com.saudepublica.saudepublica.domain.dto.ItemInputDto;
 import br.com.saudepublica.saudepublica.domain.dto.ItemOutputDto;
+import br.com.saudepublica.saudepublica.domain.dto.StockInputDto;
 import br.com.saudepublica.saudepublica.domain.dto.StockOutputDto;
 import br.com.saudepublica.saudepublica.domain.dto.enumerator.StockStatus;
 import br.com.saudepublica.saudepublica.domain.dto.enumerator.TypeStockOutput;
 import br.com.saudepublica.saudepublica.domain.repository.ItemOutputRepository;
+import br.com.saudepublica.saudepublica.domain.repository.StockInputRepository;
 import br.com.saudepublica.saudepublica.domain.repository.StockOutputRepository;
 import br.com.saudepublica.saudepublica.domain.repository.StockRepository;
 import br.com.saudepublica.saudepublica.domain.util.ValidaCPF;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -26,12 +30,18 @@ public class StockOutputService {
     private final StockOutputRepository stockOutputRepository;
     private final ItemOutputRepository itemOutputRepository;
     private final StockRepository stockRepository;
+    private final StockInputService stockInputService;
+    private final ItemInputService itemInputService;
+    private final EstablishmentService establishmentService;
     private final ModelMapper modelMapper;
 
-    public StockOutputService(StockOutputRepository stockOutputRepository, ItemOutputRepository itemOutputRepository, StockRepository stockRepository, ModelMapper modelMapper) {
+    public StockOutputService(StockOutputRepository stockOutputRepository, ItemOutputRepository itemOutputRepository, StockRepository stockRepository, StockInputRepository stockInputRepository, StockInputService stockInputService, ItemInputService itemInputService, EstablishmentService establishmentService, ModelMapper modelMapper) {
         this.stockOutputRepository = stockOutputRepository;
         this.itemOutputRepository = itemOutputRepository;
         this.stockRepository = stockRepository;
+        this.stockInputService = stockInputService;
+        this.itemInputService = itemInputService;
+        this.establishmentService = establishmentService;
         this.modelMapper = modelMapper;
     }
 
@@ -48,7 +58,7 @@ public class StockOutputService {
         stockOutputRepository.deleteById(id);
     }
 
-    public StockOutputDto save(StockOutputDto stockOutputDto) {
+    public StockOutputDto save(StockOutputDto stockOutputDto) throws Exception {
         if (stockOutputDto.getId() == null) {
             stockOutputDto.setStatus(StockStatus.SAVED);
         } else {
@@ -69,6 +79,10 @@ public class StockOutputService {
                 stockOutputDto.setErrors(Collections.singletonList("É necessário informar o estabelecimento a ser transferido!"));
                 return stockOutputDto;
             }
+            if (stockOutputDto.getEstablishment().getId().equals(stockOutputDto.getTransferEstablishment().getId())) {
+                stockOutputDto.setErrors(Collections.singletonList("Não é possível transferir para o mesmo estabelecimento informado!"));
+                return stockOutputDto;
+            }
         }
 
         stockOutputDto.setItemOutputList(
@@ -81,6 +95,8 @@ public class StockOutputService {
         }
 
         if (stockOutputDto.getStatus().equals(StockStatus.FINALIZED)) {
+            stockOutputDto.setDate(LocalDateTime.now());
+
             for (ItemOutputDto itemOutputDto : stockOutputDto.getItemOutputList()) {
                 Optional<Stock> stockOptional = stockRepository.getByEstablishmentIdAndMedicationId(stockOutputDto.getEstablishment().getId(), itemOutputDto.getMedication().getId());
                 Stock stock;
@@ -98,9 +114,24 @@ public class StockOutputService {
                 }
                 stockRepository.save(stock);
             }
-        }
 
-        stockOutputDto.setDate(LocalDateTime.now());
+            if (stockOutputDto.getType().equals(TypeStockOutput.TRANS)) {
+                StockInputDto stockInput = new StockInputDto();
+                stockInput.setEstablishment(stockOutputDto.getTransferEstablishment());
+                stockInput.setDate(stockOutputDto.getDate());
+                stockInput.setProvider("Transferência do estabelcimento " + establishmentService.getById(stockOutputDto.getEstablishment().getId()).getName());
+                stockInput = stockInputService.save(stockInput);
+                stockInput.setItemInputList(new ArrayList<>());
+                for (ItemOutputDto itemOutputDto : stockOutputDto.getItemOutputList()) {
+                    ItemInputDto itemInputDto = new ItemInputDto();
+                    itemInputDto.setStockInput(stockInput);
+                    itemInputDto.setMedication(itemOutputDto.getMedication());
+                    itemInputDto.setAmount(itemOutputDto.getAmount());
+                    stockInput.getItemInputList().add(itemInputService.save(itemInputDto));
+                }
+                stockInputService.save(stockInput);
+            }
+        }
 
         return modelMapper.map(
                 stockOutputRepository.save(

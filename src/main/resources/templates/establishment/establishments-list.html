@@ -29,7 +29,7 @@
 
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
-        <a href="index3.html" class="brand-link">
+        <a href="/" class="brand-link">
             <span class="brand-text font-weight-light">Saúde Pública</span>
         </a>
 
@@ -38,7 +38,8 @@
             <!-- Sidebar user panel (optional) -->
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                 <div class="info">
-                    <a href="#" class="d-block">Nome</a>
+                    <a href="#" class="d-block font-size-18" th:text="${user.name}"></a>
+                    <a href="#" class="d-block font-size-14" th:text="${user.type.description}"></a>
                 </div>
             </div>
 
@@ -113,21 +114,21 @@
                                 <!-- /.card-header -->
                                 <div class="card-body">
                                     <form action="/establishments/new">
-                                        <button type="submit" class="btn btn-info m-2">Novo</button>
+                                        <button type="submit" class="btn btn-info m-2" th:disabled="${user.type.key} != ADMIN">Novo</button>
                                     </form>
                                     <table id="example2" class="table table-bordered table-hover">
                                         <thead>
                                         <tr>
                                             <th>Nome</th>
                                             <th>CNPJ</th>
-                                            <th></th>
+                                            <th th:if="${user.type.key} == ADMIN"></th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                         <tr th:each="establishment : ${establishments}">
                                             <td th:text="${establishment.name}"></td>
                                             <td th:text="${establishment.cnpj}"></td>
-                                            <td>
+                                            <td th:if="${user.type.key} == ADMIN">
                                                 <a class="m-2 text-decoration-none"
                                                    th:href="@{/establishments/{id}(id=${establishment.id})}">
                                                     <ion-icon class="icon-size" name="create-outline"></ion-icon>

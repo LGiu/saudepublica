@@ -1,5 +1,6 @@
 package br.com.saudepublica.saudepublica.application.controller;
 
+import br.com.saudepublica.saudepublica.application.util.Session;
 import br.com.saudepublica.saudepublica.domain.dto.EstablishmentDto;
 import br.com.saudepublica.saudepublica.domain.service.EstablishmentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,7 @@ public class EstablishmentController {
     public ModelAndView getEstablishments() {
         ModelAndView modelAndView = new ModelAndView("establishment/establishments-list");
         modelAndView.addObject("establishments", establishmentService.getAll());
+        modelAndView.addObject("user", Session.getUser());
         return modelAndView;
     }
 
@@ -38,6 +40,7 @@ public class EstablishmentController {
     public ModelAndView getEstablishmentById(@PathVariable("id") Long id, EstablishmentDto establishment, Boolean outRequest) throws Exception {
         ModelAndView modelAndView = new ModelAndView("establishment/establishments-form");
         modelAndView.addObject("establishment", outRequest != null && !outRequest ? establishment : establishmentService.getById(id));
+        modelAndView.addObject("user", Session.getUser());
         return modelAndView;
     }
 
@@ -45,6 +48,7 @@ public class EstablishmentController {
     public ModelAndView newEstablishment(EstablishmentDto establishment) {
         ModelAndView modelAndView = new ModelAndView("establishment/establishments-form");
         modelAndView.addObject("establishment", establishment != null ? establishment : new EstablishmentDto());
+        modelAndView.addObject("user", Session.getUser());
         return modelAndView;
     }
 

@@ -29,7 +29,7 @@
 
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
-        <a href="index3.html" class="brand-link">
+        <a href="/" class="brand-link">
             <span class="brand-text font-weight-light">Saúde Pública</span>
         </a>
 
@@ -38,7 +38,8 @@
             <!-- Sidebar user panel (optional) -->
             <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                 <div class="info">
-                    <a href="#" class="d-block">Nome</a>
+                    <a href="#" class="d-block font-size-18" th:text="${user.name}"></a>
+                    <a href="#" class="d-block font-size-14" th:text="${user.type.description}"></a>
                 </div>
             </div>
 
@@ -122,8 +123,8 @@
                                             <th>Status</th>
                                             <th>Tipo</th>
                                             <th>Estabelecimento</th>
-                                            <th>Identificação da Dispensa</th>
                                             <th>Estabelecimento transferido</th>
+                                            <th>Identificação da Dispensa</th>
                                             <th>Itens e Quantidade</th>
                                             <th></th>
                                         </tr>
@@ -134,8 +135,8 @@
                                             <td th:text="${stockOutput.status.description}"></td>
                                             <td th:text="${stockOutput.type.description}"></td>
                                             <td th:text="${stockOutput.establishment.name}"></td>
+                                            <td th:text="${stockOutput.transferEstablishment?.name}"></td>
                                             <td th:text="${stockOutput.name} + '  -  ' + ${stockOutput.cpf}"></td>
-                                            <td th:text="${stockOutput.transferEstablishment.name}"></td>
                                             <td>
                                                 <p th:each="itemInput : ${stockOutput.itemOutputList}"
                                                    th:text="${itemInput.medication.name} + '  -  ' + ${itemInput.amount}"></p>
