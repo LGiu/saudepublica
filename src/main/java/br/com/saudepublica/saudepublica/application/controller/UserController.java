@@ -34,7 +34,7 @@ public class UserController {
     public ModelAndView getUsers() {
         ModelAndView modelAndView = new ModelAndView("user/users-list");
         modelAndView.addObject("users", userService.getAll());
-        modelAndView.addObject("user", Session.getUser());
+        modelAndView.addObject("userLogged", Session.getUser());
         return modelAndView;
     }
 
@@ -45,7 +45,7 @@ public class UserController {
         userDto.setPassword(null);
         modelAndView.addObject("user", userDto);
         modelAndView.addObject("typeUser", TypeUser.values());
-        modelAndView.addObject("user", Session.getUser());
+        modelAndView.addObject("userLogged", Session.getUser());
         return modelAndView;
     }
 
@@ -54,7 +54,7 @@ public class UserController {
         ModelAndView modelAndView = new ModelAndView("user/users-form");
         modelAndView.addObject("user", userDto != null ? userDto : new UserDto());
         modelAndView.addObject("typeUser", TypeUser.values());
-        modelAndView.addObject("user", Session.getUser());
+        modelAndView.addObject("userLogged", Session.getUser());
         return modelAndView;
     }
 

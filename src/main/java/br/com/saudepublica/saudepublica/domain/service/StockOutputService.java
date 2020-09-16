@@ -74,6 +74,7 @@ public class StockOutputService {
                 stockOutputDto.setErrors(Collections.singletonList("CPF inválido!"));
                 return stockOutputDto;
             }
+            stockOutputDto.setTransferEstablishment(null);
         } else if (stockOutputDto.getType() != null && stockOutputDto.getType().equals(TypeStockOutput.TRANS)) {
             if (stockOutputDto.getTransferEstablishment() == null) {
                 stockOutputDto.setErrors(Collections.singletonList("É necessário informar o estabelecimento a ser transferido!"));
@@ -83,6 +84,8 @@ public class StockOutputService {
                 stockOutputDto.setErrors(Collections.singletonList("Não é possível transferir para o mesmo estabelecimento informado!"));
                 return stockOutputDto;
             }
+            stockOutputDto.setName(null);
+            stockOutputDto.setCpf(null);
         }
 
         stockOutputDto.setItemOutputList(

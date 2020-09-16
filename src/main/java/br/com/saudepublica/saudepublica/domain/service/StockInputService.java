@@ -82,6 +82,7 @@ public class StockInputService {
 
         stockInputDto.setDate(LocalDateTime.now());
 
+
         return modelMapper.map(
                 stockInputRepository.save(
                         modelMapper.map(stockInputDto, StockInput.class)),

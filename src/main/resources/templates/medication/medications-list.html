@@ -120,7 +120,7 @@
                                         <tr>
                                             <th>Nome</th>
                                             <th>Data de Vencimento</th>
-                                            <th>Código de Barro</th>
+                                            <th>Código de Barras</th>
                                             <th>Quantidade</th>
                                             <th th:if="${user.type.key} == ADMIN"></th>
                                         </tr>
@@ -130,14 +130,14 @@
                                             <td th:text="${medication.name}"></td>
                                             <td th:text="${#temporals.format(medication.dueDate, 'dd/MM/yyyy')}"></td>
                                             <td th:text="${medication.barcode}"></td>
-                                            <td th:if="${user.type.key} == ADMIN">
+                                            <td>
                                                 <p th:if="${medication.stockList} != null"
                                                    th:each="stock : ${medication.stockList}"
                                                    th:text="${stock.establishment.name} + '  -  ' + ${stock.amount}"></p>
                                                 <p th:if="${medication.stockList == null || medication.stockList.empty}"
                                                    th:text="0"></p>
                                             </td>
-                                            <td>
+                                            <td th:if="${user.type.key} == ADMIN">
                                                 <a class="m-2 text-decoration-none"
                                                    th:href="@{/medications/{id}(id=${medication.id})}">
                                                     <ion-icon class="icon-size" name="create-outline"></ion-icon>

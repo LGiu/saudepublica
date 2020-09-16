@@ -123,8 +123,8 @@
                                     <input type="hidden" id="status" name="status" th:value="${stockInput.status}">
                                     <div class="form-group">
                                         <label>Estabelecimento</label>
-                                        <select th:readonly="${stockInput.status != null}"
-                                                th:classappend="${stockInput.status != null} ? disable-select : none"
+                                        <select th:readonly="${stockInput.id != null}"
+                                                th:classappend="${stockInput.id != null} ? disable-select : none"
                                                 required=true class="form-control" id="establishment.id"
                                                 name="establishment.id">
                                             <option th:each="establishment : ${establishments}"
@@ -136,7 +136,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="invoiceNumber">Número da Nota Fiscal</label>
-                                        <input th:readonly="${stockInput.status != null}"
+                                        <input th:readonly="${stockInput.id != null}"
                                                 required=true type="number" class="form-control" id="invoiceNumber"
                                                name="invoiceNumber"
                                                placeholder="Número da Nota Fiscal "
@@ -144,7 +144,7 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="provider">Nome do Fornecedor</label>
-                                        <input th:readonly="${stockInput.status != null}"
+                                        <input th:readonly="${stockInput.id != null}"
                                                 required=true type="text" class="form-control" id="provider"
                                                name="provider"
                                                placeholder="Nome do Fornecedor" th:value="${stockInput.provider}">

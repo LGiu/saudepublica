@@ -20,6 +20,6 @@ public class EstablishmentDto extends Dto {
     private String name;
 
     @NotEmpty(message = "O CNPJ não pode ser vazio!")
-    @CNPJ(message = "O CNPF é inválido!")
+    @CNPJ(message = "O CNPJ é inválido!")
     private String cnpj;
 }
