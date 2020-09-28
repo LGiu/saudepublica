@@ -168,6 +168,7 @@
                                                 <tr>
                                                     <th>Nome</th>
                                                     <th>Quantidade</th>
+                                                    <th>Valor</th>
                                                     <th></th>
                                                 </tr>
                                                 </thead>
@@ -175,6 +176,7 @@
                                                 <tr th:each="itemInput : ${stockInput.itemInputList}">
                                                     <td th:text="${itemInput.medication.name}"></td>
                                                     <td th:text="${itemInput.amount}"></td>
+                                                    <td th:text="'R$ ' + ${itemInput.value}"></td>
                                                     <td>
                                                         <a class="m-2 text-decoration-none"
                                                            th:href="@{/stocks-inputs/delete-item/{id}(id=${itemInput.id})}">
@@ -254,6 +256,11 @@
                                name="amount"
                                placeholder="Quantidade"
                                th:value="${itemInput.amount}">
+                        <br>
+                        <input type="number" class="form-control" id="value"
+                               name="value" step="0.01"
+                               placeholder="Valor (R$)"
+                               th:value="${itemInput.value}">
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-default"

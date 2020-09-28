@@ -8,6 +8,7 @@ import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 
 @Data
 @Builder
@@ -25,4 +26,7 @@ public class ItemInputDto extends Dto {
     @NotNull(message = "A quantidade não pode ser vazio!")
     @Range(min = 1)
     private Integer amount;
+
+    @NotNull(message = "O valor não pode ser vazio!")
+    private BigDecimal value;
 }

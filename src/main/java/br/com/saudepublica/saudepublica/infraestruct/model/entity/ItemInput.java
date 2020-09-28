@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Data
 @Builder
@@ -27,4 +28,7 @@ public class ItemInput extends Model {
 
     @Column
     private Integer amount;
+
+    @Column
+    private BigDecimal value;
 }

@@ -124,7 +124,8 @@
                                             <th>Estabelecimento</th>
                                             <th>Número da Nota Fiscal</th>
                                             <th>Nome do Fornecedor</th>
-                                            <th>Itens e Quantidade</th>
+                                            <th>Valor Total</th>
+                                            <th>Itens, Quantidade e valor</th>
                                             <th></th>
                                         </tr>
                                         </thead>
@@ -135,9 +136,10 @@
                                             <td th:text="${stockInput.establishment.name}"></td>
                                             <td th:text="${stockInput.invoiceNumber}"></td>
                                             <td th:text="${stockInput.provider}"></td>
+                                            <td th:text="'R$ ' + ${stockInput.totalValue}"></td>
                                             <td>
                                                 <p th:each="itemInput : ${stockInput.itemInputList}"
-                                                   th:text="${itemInput.medication.name} + '  -  ' + ${itemInput.amount}"></p>
+                                                   th:text="${itemInput.medication.name} + '  -  ' + ${itemInput.amount} + '  -  R$ ' + ${itemInput.value}"></p>
                                             </td>
                                             <td>
                                                 <a th:if="${stockInput.status.key} == SAVED"

@@ -13,6 +13,7 @@ import br.com.saudepublica.saudepublica.infraestruct.model.entity.StockInput;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
@@ -49,6 +50,7 @@ public class StockInputService {
 
     public StockInputDto save(StockInputDto stockInputDto) {
         if (stockInputDto.getId() == null) {
+            stockInputDto.setTotalValue(BigDecimal.ZERO);
             stockInputDto.setStatus(StockStatus.SAVED);
         } else {
             stockInputDto.setStatus(StockStatus.FINALIZED);
@@ -64,6 +66,7 @@ public class StockInputService {
         }
 
         if (stockInputDto.getStatus().equals(StockStatus.FINALIZED)) {
+            stockInputDto.setTotalValue(BigDecimal.ZERO);
             stockInputDto.getItemInputList().forEach(itemInputDto -> {
                 Optional<Stock> stockOptional = stockRepository.getByEstablishmentIdAndMedicationId(stockInputDto.getEstablishment().getId(), itemInputDto.getMedication().getId());
                 Stock stock;
@@ -77,11 +80,14 @@ public class StockInputService {
                     stock.setAmount(itemInputDto.getAmount());
                 }
                 stockRepository.save(stock);
+
+                stockInputDto.setTotalValue(stockInputDto.getTotalValue().add(
+                        itemInputDto.getValue().multiply(
+                                BigDecimal.valueOf(itemInputDto.getAmount()))));
             });
         }
 
         stockInputDto.setDate(LocalDateTime.now());
-
 
         return modelMapper.map(
                 stockInputRepository.save(
