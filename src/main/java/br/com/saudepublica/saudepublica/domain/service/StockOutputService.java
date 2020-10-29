@@ -13,6 +13,7 @@ import br.com.saudepublica.saudepublica.domain.repository.StockRepository;
 import br.com.saudepublica.saudepublica.domain.util.ValidaCPF;
 import br.com.saudepublica.saudepublica.infraestruct.model.entity.Stock;
 import br.com.saudepublica.saudepublica.infraestruct.model.entity.StockOutput;
+import java.math.BigDecimal;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -130,6 +131,7 @@ public class StockOutputService {
                     itemInputDto.setStockInput(stockInput);
                     itemInputDto.setMedication(itemOutputDto.getMedication());
                     itemInputDto.setAmount(itemOutputDto.getAmount());
+                    itemInputDto.setValue(BigDecimal.ZERO);
                     stockInput.getItemInputList().add(itemInputService.save(itemInputDto));
                 }
                 stockInputService.save(stockInput);

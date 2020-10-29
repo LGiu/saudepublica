@@ -39,6 +39,50 @@ Após logar você será redirecionado para a página Home.
 
 ## Conhecendo o sistema
 
+### Login
+
+![Login](images/Login.PNG)
+
 ### Home
 
 ![Home](images/Home.PNG)
+
+### Usuário
+
+Listagem de usuários
+![User1](images/User1.PNG)
+
+Cadastro de usuário
+![User2](images/User2.PNG)
+
+### Estabelecimento
+
+Listagem de estabelecimentos
+![Establishment2](images/Establishment1.PNG)
+
+Cadastro de estabelecimento
+![Establishment2](images/Establishment2.PNG)
+
+### Medicamento
+
+Listagem de medicamentos
+![Medication1](images/Medication1.PNG)
+
+Cadastro de medicamento
+![Medication2](images/Medication2.PNG)
+
+### Entrada de Estoque
+
+Listagem de entradas de Estoque
+![StockInput1](images/StockInput1.PNG)
+
+Cadastro de entrada de Estoque
+![StockInput2](images/StockInput2.PNG)
+
+### Saída de Estoque
+
+Listagem de saídas de Estoque
+![StockOutput1](images/StockOutput1.PNG)
+
+Cadastro de saída de Estoque
+![StockOutput2](images/StockOutput2.PNG)

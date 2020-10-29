@@ -136,10 +136,12 @@
                                             <td th:text="${stockOutput.type.description}"></td>
                                             <td th:text="${stockOutput.establishment.name}"></td>
                                             <td th:text="${stockOutput.transferEstablishment?.name}"></td>
-                                            <td th:text="${stockOutput.name} + '  -  ' + ${stockOutput.cpf}"></td>
+                                            <td th:if="${stockOutput.type.key} == DISPEN"
+                                                th:text="${stockOutput.name} + '  -  ' + ${stockOutput.cpf}"></td>
+                                            <td th:if="${stockOutput.type.key} == TRANS"></td>
                                             <td>
                                                 <p th:each="itemInput : ${stockOutput.itemOutputList}"
-                                                   th:text="${itemInput.medication.name} + '  -  ' + ${itemInput.amount}"></p>
+                                                   th:text="${itemInput.medication?.name} + '  -  ' + ${itemInput.amount}"></p>
                                             </td>
                                             <td>
                                                 <a th:if="${stockOutput.status.key} == SAVED"
