@@ -81,20 +81,20 @@ Cadastro de medicamento
 
 ### Entrada de Estoque
 
-Listagem de entradas de Estoque
+Listagem de entradas de estoque
 
 ![StockInput1](images/StockInput1.PNG)
 
-Cadastro de entrada de Estoque
+Cadastro de entrada de estoque
 
 ![StockInput2](images/StockInput2.PNG)
 
 ### Saída de Estoque
 
-Listagem de saídas de Estoque
+Listagem de saídas de estoque
 
 ![StockOutput1](images/StockOutput1.PNG)
 
-Cadastro de saída de Estoque
+Cadastro de saída de estoque
 
 ![StockOutput2](images/StockOutput2.PNG)
